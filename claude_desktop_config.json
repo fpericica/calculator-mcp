@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "Calculator MCP": {
+      "command": "C:\\Users\\felix.pericica\\Desktop\\GenAI Masterclass\\MCP_Bootcamp\\Calculator_MCP\\.venv\\Scripts\\python.exe",
+      "args": [
+        "C:\\Users\\felix.pericica\\Desktop\\GenAI Masterclass\\MCP_Bootcamp\\Calculator_MCP\\server.py"
+      ]
+    }
+  }
+}

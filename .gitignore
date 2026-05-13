@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment
+.env
+
+# VS Code
+.vscode/
+
+# Ollama / models
+models/
+*.gguf
+
+# HF cache
+.cache/
+huggingface/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Training outputs
+outputs/
+checkpoints/
+runs/
+
+# Logs
+*.log

@@ -1,0 +1,188 @@
+{
+  "name": "calculator-mcp",
+  "displayName": "Calculator MCP",
+  "version": "1.0.0",
+  "description": "MCP server protocol contract for calculator operations and live currency conversion.",
+  "tools": [
+    {
+      "name": "add",
+      "description": "Addition - add two numbers.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "number"
+          },
+          "b": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "a",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "number"
+      }
+    },
+    {
+      "name": "subtract",
+      "description": "Subtraction - subtract the second number from the first.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "number"
+          },
+          "b": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "a",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "number"
+      }
+    },
+    {
+      "name": "multiply",
+      "description": "Multiplication - multiply two given numbers.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "number"
+          },
+          "b": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "a",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "number"
+      }
+    },
+    {
+      "name": "divide",
+      "description": "Division - divide the first number by the second. Raises error on division by zero.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "a": {
+            "type": "number"
+          },
+          "b": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "a",
+          "b"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "number"
+      },
+      "errors": [
+        {
+          "type": "ValueError",
+          "message": "Division by zero is not allowed."
+        }
+      ]
+    },
+    {
+      "name": "convert_currency",
+      "description": "Live exchange rate calculator - fetch current exchange rate from one currency to another.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "from_currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "to_currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "required": [
+          "amount",
+          "from_currency",
+          "to_currency"
+        ],
+        "additionalProperties": false
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "minimum": 0
+          },
+          "from_currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "to_currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          },
+          "rate": {
+            "type": "number",
+            "minimum": 0
+          },
+          "converted_amount": {
+            "type": "number",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "amount",
+          "from_currency",
+          "to_currency",
+          "rate",
+          "converted_amount"
+        ],
+        "additionalProperties": false
+      },
+      "errors": [
+        {
+          "type": "ValueError",
+          "message": "Invalid currency code. Use 3-letter ISO code."
+        },
+        {
+          "type": "ValueError",
+          "message": "Amount must be greater than or equal to 0."
+        },
+        {
+          "type": "RuntimeError",
+          "message": "Failed to fetch live exchange rates."
+        },
+        {
+          "type": "RuntimeError",
+          "message": "Exchange rate provider error."
+        },
+        {
+          "type": "ValueError",
+          "message": "No exchange rate available for target currency."
+        }
+      ]
+    }
+  ]
+}
