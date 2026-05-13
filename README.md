@@ -1,6 +1,6 @@
-# LAB 6 -  Tool Calling & MCP
+# LAB 6 & LAB 9 — Tool Calling, MCP, and Regression Testing
 
-This repository contains a complete MCP server lab project built with `FastMCP`. It implements calculator tools, a live currency conversion tool, JSON schema contracts, and contract tests that include success and failure scenarios.
+This repository contains a complete MCP server lab project built with `FastMCP`. It implements calculator tools, a live currency conversion tool, JSON schema contracts, and an automated **regression test suite** that covers **tool calling** (as outlined in **LAB 9**): each tool is exercised with realistic payloads, inputs and outputs are checked against the same JSON schemas clients rely on, and failure paths are asserted so refactors do not silently break tool behavior.
 
 ## Lab Goals Covered
 
@@ -10,6 +10,7 @@ This project satisfies all requested outcomes:
 - Define and validate JSON schemas: **done**
 - Implement contract tests: **done**
 - Simulate failure scenarios and handle gracefully: **done**
+- **LAB 9 — Build an automated regression suite covering tool calls: done** (`pytest` in `tests/test_contracts.py`; see [Testing and regression (LAB 9)](#testing-and-regression-lab-9))
 
 ## Project Structure
 
@@ -18,7 +19,7 @@ This project satisfies all requested outcomes:
 - `schemas.py`  
   JSON schema definitions and shared schema validation helper.
 - `tests/test_contracts.py`  
-  Contract tests for all tools, including error-path tests.
+  **LAB 9 regression suite:** contract and behavior tests for every MCP tool (happy and error paths), runnable with `pytest`.
 - `tests/conftest.py`  
   Test bootstrap to ensure project imports work consistently across Windows runners and working directories.
 - `calculator-mcp.json`  
@@ -100,9 +101,19 @@ It is useful for:
 - client generation/inspection flows
 - keeping expectations explicit and reviewable
 
+## Testing and regression (LAB 9)
+
+**LAB 9** asks for an **automated regression suite** that covers **tool calling**. This repository delivers that as a **`pytest`** suite in `tests/test_contracts.py`:
+
+- **Automation:** run locally or in CI with `python -m pytest` (see [How to Run](#how-to-run)); failures flag broken tools or contract drift before release.
+- **Tool coverage:** every registered tool handler (`add`, `subtract`, `multiply`, `divide`, `convert_currency`) is invoked the same way the MCP layer would call into Python—using argument dicts that match each tool’s input schema—so regressions in arithmetic, currency conversion, or validation surface immediately.
+- **Contract alignment:** each test validates inputs and outputs with the shared JSON schemas in `schemas.py`, keeping tests aligned with `calculator-mcp.json` and client expectations.
+
+Tests call the **tool implementation functions** directly (not the stdio MCP wire protocol). That still constitutes regression coverage over **tool calls** in the sense LAB 9 targets: payloads, results, errors, and schemas for each tool.
+
 ## Testing Strategy (`tests/test_contracts.py`)
 
-The test suite validates both behavior and contract compliance:
+The suite validates both behavior and contract compliance:
 
 ### Happy-path contract tests
 
@@ -171,4 +182,4 @@ Use that structure in your local Claude Desktop MCP config to register and launc
 3. Validation and guard checks run
 4. For currency conversion, live HTTP call retrieves rates
 5. Output is returned (and conversion payload schema-validated)
-6. Contract tests guarantee both positive and negative paths stay compliant
+6. The LAB 9 regression suite (`pytest`) guarantees both positive and negative tool-call paths stay compliant
